@@ -1,4 +1,4 @@
--- CREATE DATABASE chatterbox;
+-- CREATE DATABASE chat;
 
 USE chat;
 
@@ -29,12 +29,21 @@ USE chat;
 DROP TABLE IF EXISTS `Messages`;
     
 CREATE TABLE `Messages` (
-  `MessageId` INTEGER AUTO_INCREMENT,
+  `objectId` INTEGER AUTO_INCREMENT,
   `room` INTEGER (100),
   `username` INTEGER (50),
-  `message` TEXT(1000),
-  PRIMARY KEY (`MessageId`)
+  `text` TEXT(1000),
+  `createdAt` TEXT(30),
+  PRIMARY KEY (`objectId`)
 );
+
+-- CREATE TABLE `Messages` (
+--   `MessageId` INTEGER AUTO_INCREMENT,
+--   `room` INTEGER (100),
+--   `username` INTEGER (50),
+--   `message` TEXT(1000),
+--   PRIMARY KEY (`MessageId`)
+-- );
 
 -- ---
 -- Table 'Rooms'
@@ -45,7 +54,7 @@ DROP TABLE IF EXISTS `Rooms`;
     
 CREATE TABLE `Rooms` (
   `roomId` INTEGER AUTO_INCREMENT,
-  `roomName` TEXT(50),
+  `roomname` TEXT(50),
   PRIMARY KEY (`roomId`)
 );
 
@@ -58,9 +67,11 @@ DROP TABLE IF EXISTS `Users`;
     
 CREATE TABLE `Users` (
   `userId` INTEGER AUTO_INCREMENT,
-  `username` TEXT(50),
-  PRIMARY KEY (`userId`)
+  `username` VARCHAR(50) NULL DEFAULT NULL,
+  PRIMARY KEY (`userId`),
+  UNIQUE KEY (`username`)
 );
+
 
 -- ---
 -- Foreign Keys 

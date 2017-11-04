@@ -65,7 +65,7 @@ var app = {
       contentType: 'application/json',
       success: function(dataString) {
         var data = JSON.parse(dataString);
-          
+        console.log (data)
         //console.log('Fetched something', data, typeof data);
         // Don't bother if we have nothing to work with
         if (!data.results || !data.results.length) {
