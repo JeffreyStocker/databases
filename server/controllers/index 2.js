@@ -1,34 +1,20 @@
 var models = require('../models');
-var db = require('../db');
-var bluebird = require('bluebird');
-
-var Messages = db.Messages;
-var Users = db.Users;
-var Rooms = db.Rooms;
 
 module.exports = {
   messages: {
     get: function (req, res) {
-      /////////////// freds//////////////
-      console.log ('body: ', req.body);
-      console.log ('Message:', Messages)
-      Messages.findAll( {include: [Users]}) 
-        .complete((error, results) => {
-          res.json(results);
-        });
-      //////////////// original///////////////
-      // console.log('Message: Get:');
-      // /// get the messages
-      // models.messages.get()
-      // .then((result) => {
-      //   console.log ('results send Get:', result);
-      //   res.writeHead(200);
-      //   res.write(JSON.stringify({ results: result}));
-      //   res.end();
-      // })
-      // .catch(error => {
+      console.log('Message: Get:');
+      /// get the messages
+      models.messages.get()
+      .then((result) => {
+        console.log ('results send Get:', result);
+        res.writeHead(200);
+        res.write(JSON.stringify({ results: result}));
+        res.end();
+      })
+      .catch(error => {
 
-      // });
+      });
       
       // .then (function (results) {
       //   res.write(JSON.stringify(results));
@@ -40,34 +26,19 @@ module.exports = {
 
     }, // a function which handles a get request for all messages
     post: function (req, res) {
-    //////////// freds////////////
-      console.log ('body: ', req.body);
-      Users.findOrCreate({username: req.body[username]})
-        .complete((err, user) => {
-          var options = {
-            text: req.body[text], 
-            userId: user.id, 
-            roomname: req.body[roomname]
-          };
-        });
-      Messages.create(options)
-        .complete((err, results) => {
-          res.sendStatus(201);
-        });
-      ////////////// original//////////////
-    //   console.log('Message: Post');
+      console.log('Message: Post');
 
-    //   let body = '';
-    //   req.on('data', chunk => {
-    //     body += chunk;
-    //   });
-    //   req.on('end', () => {
-    //     console.log(body);
-    //     models.messages.post(JSON.parse(body));
-    //     res.writeHead(201);
-    //     res.write(JSON.stringify({}));
-    //     res.end();
-    //   });
+      let body = '';
+      req.on('data', chunk => {
+        body += chunk;
+      });
+      req.on('end', () => {
+        console.log(body);
+        models.messages.post(JSON.parse(body));
+        res.writeHead(201);
+        res.write(JSON.stringify({}));
+        res.end();
+      });
     } // a function which handles posting a message to the database
   },
 
@@ -90,7 +61,7 @@ module.exports = {
       console.log('users: Post:');
       if (req.body !== undefined) {
         body = req.body;
-        console.log ('raw body', typeof body);
+        console.log ('raw body', typeof body)
         models.users.post(body, (error, data) => {
           if (error) {
             res.writeHead(404);
