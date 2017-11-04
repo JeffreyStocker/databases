@@ -29,11 +29,11 @@ USE chat;
 DROP TABLE IF EXISTS `Messages`;
     
 CREATE TABLE `Messages` (
-  `id` INTEGER (10) AUTO_INCREMENT,
-  `room` TEXT (10),
-  `username` TEXT (10),
-  `message` TEXT(254),
-  PRIMARY KEY (`id`)
+  `MessageId` INTEGER AUTO_INCREMENT,
+  `room` INTEGER (100),
+  `username` INTEGER (50),
+  `message` TEXT(1000),
+  PRIMARY KEY (`MessageId`)
 );
 
 -- ---
@@ -44,9 +44,9 @@ CREATE TABLE `Messages` (
 DROP TABLE IF EXISTS `Rooms`;
     
 CREATE TABLE `Rooms` (
-  `id` INTEGER AUTO_INCREMENT,
+  `roomId` INTEGER AUTO_INCREMENT,
   `roomName` TEXT(50),
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`roomId`)
 );
 
 -- ---
@@ -57,17 +57,17 @@ CREATE TABLE `Rooms` (
 DROP TABLE IF EXISTS `Users`;
     
 CREATE TABLE `Users` (
-  `id` INTEGER AUTO_INCREMENT,
+  `userId` INTEGER AUTO_INCREMENT,
   `username` TEXT(50),
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`userId`)
 );
 
 -- ---
 -- Foreign Keys 
 -- ---
 
-ALTER TABLE `Messages` ADD FOREIGN KEY (room) REFERENCES `Rooms` (`id`);
-ALTER TABLE `Messages` ADD FOREIGN KEY (username) REFERENCES `Users` (`id`);
+ALTER TABLE `Messages` ADD FOREIGN KEY (room) REFERENCES `Rooms` (`roomId`);
+ALTER TABLE `Messages` ADD FOREIGN KEY (username) REFERENCES `Users` (`userId`);
 
 -- ---
 -- Table Properties

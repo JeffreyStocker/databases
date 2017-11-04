@@ -6,6 +6,7 @@ module.exports = {
       console.log('Message: Get:');
       /// get the messages
       models.messages.get();
+      
       // .then (function (results) {
       //   res.write(JSON.stringify(results));
       //   res.end();

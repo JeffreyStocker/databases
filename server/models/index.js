@@ -6,8 +6,8 @@ module.exports = {
   messages: {
     get: function () {
       console.log ('Controller: Messages: Get');
-      dbChat.query('SELECT Messages.id, Messages.message, Rooms.roomName, Users.username FROM Messages, Rooms, Users', (error, results, field) => {
-        // console.log('results',results,'\nfield', field);
+      // dbChat.query('SELECT Messages.id, Messages.message, Rooms.roomName, Users.username FROM Messages, Rooms, Users', (error, results, field) => {
+      dbChat.query('SELECT * FROM Messages, Rooms, Users', (error, results, field) => {
         if (!error) {
           console.log ('db results: ', results);
         } else {
@@ -17,7 +17,7 @@ module.exports = {
     }, // a function which produces all the messages
     post: function (message) {
       console.log ('Controller: Messages: Post');
-      // message = JSON.parse(message);
+      message = JSON.parse(message);  //don't delete
       var data = {};
       data.username = message.username || 'anonymous';
       data.message = message.text || '';
@@ -26,44 +26,38 @@ module.exports = {
       // console.log('post args', arguments);
       // console.log (data)
 
-
+      /////////////note////////////
+      //we appear to be inserting data multiple times...
       dbChat.query(`INSERT INTO Rooms (roomName) values ('${data.room}')`, (error, responseRoom) => {
         if (error) {
           console.log('Error posting message:', error);
         } else {
-          // console.log('Message posted:', message, '||', response);
-          dbChat.query(`insert into Users (username) values ('${data.username}')`, (error, responseUser) => {
-            if (error) {
-              console.log('Error posting message:', error);
-            } else {
-              dbChat.query(`insert into Messages (room, username, message) values ('${responseRoom.insertId}', '${responseUser.insertId}', '${data.message}')`, (error, response) => {
-                if (error) {
-                  console.log('Error posting message:', error);
-                } else {
-                  console.log ('WE INSERTED THINGS CORRECTLY WE THINK!!!!');
-                  console.log (responseUser);
-                }
-              });
-            }
-          });
+          console.log ('WE INSERTED THINGS CORRECTLY WE THINK!!!!');
+          console.log (responseRoom);
         }
       });
 
-      // dbChat.query(
-      //   `start transaction;
-      //   insert into Rooms (roomName) 
-      //     values (${data.room});
-
-      //   insert into Users  (username)
-      //     values (${data.username});
-
-      //   select Users.id, Rooms.id from Users, Rooms 
-
-      //   insert into Messages set;
-
-      //   ${database.room}
-  
-      // `);
+      // dbChat.query(`INSERT INTO Rooms (roomName) values ('${data.room}')`, (error, responseRoom) => {
+      //   if (error) {
+      //     console.log('Error posting message:', error);
+      //   } else {
+      //     // console.log('Message posted:', message, '||', response);
+      //     dbChat.query(`insert into Users (username) values ('${data.username}')`, (error, responseUser) => {
+      //       if (error) {
+      //         console.log('Error posting message:', error);
+      //       } else {
+      //         dbChat.query(`insert into Messages (room, username, message) values ('${responseRoom.insertId}', '${responseUser.insertId}', '${data.message}')`, (error, response) => {
+      //           if (error) {
+      //             console.log('Error posting message:', error);
+      //           } else {
+      //             console.log ('WE INSERTED THINGS CORRECTLY WE THINK!!!!');
+      //             console.log (responseUser);
+      //           }
+      //         });
+      //       }
+      //     });
+      //   }
+      // });
 
 
 
